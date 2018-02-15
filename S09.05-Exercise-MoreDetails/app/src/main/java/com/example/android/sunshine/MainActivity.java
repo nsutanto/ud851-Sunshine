@@ -258,29 +258,23 @@ public class MainActivity extends AppCompatActivity implements
         mForecastAdapter.swapCursor(null);
     }
 
-    //  TODO (38) Refactor onClick to accept a long instead of a String as its parameter
-    /**
-     * This method is for responding to clicks from our list.
-     *
-     * @param weatherForDay String describing weather details for a particular day
-     */
+    //  COMPLETED (38) Refactor onClick to accept a long instead of a String as its parameter
     @Override
-    public void onClick(String weatherForDay) {
-//      TODO (39) Refactor onClick to build a URI for the clicked date and and pass it with the Intent using setData
-        Context context = this;
-        Class destinationClass = DetailActivity.class;
-        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, weatherForDay);
-        startActivity(intentToStartDetailActivity);
+    public void onClick(long date) {
+        Intent weatherDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
+//      COMPLETED (39) Refactor onClick to pass the URI for the clicked date with the Intent
+        Uri uriForDateClicked = WeatherContract.WeatherEntry.buildWeatherUriWithDate(date);
+        weatherDetailIntent.setData(uriForDateClicked);
+        startActivity(weatherDetailIntent);
     }
 
-    /**
-     * This method will make the View for the weather data visible and hide the error message and
-     * loading indicator.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
-     * each view is currently visible or invisible.
-     */
+        /**
+         * This method will make the View for the weather data visible and hide the error message and
+         * loading indicator.
+         * <p>
+         * Since it is okay to redundantly set the visibility of a View, we don't need to check whether
+         * each view is currently visible or invisible.
+         */
     private void showWeatherDataView() {
         /* First, hide the loading indicator */
         mLoadingIndicator.setVisibility(View.INVISIBLE);
